@@ -4,6 +4,7 @@ import android.util.Log
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.map.parkingspotter.domain.AuthResult
 import com.map.parkingspotter.domain.Email
 import com.map.parkingspotter.domain.Password
@@ -20,12 +21,31 @@ class Service {
 
     suspend fun signup(email: Email, password: Password): AuthResult {
         return try {
+
             val result =
                 auth.createUserWithEmailAndPassword(email.value, password.value).await().user
                     ?: return AuthResult(null, Status.ERROR)
+
             val email = result.email?.let { Email(it) } ?: return AuthResult(null, Status.ERROR)
+
             //result.sendEmailVerification()
+
             val user = User(result.uid, email)
+
+
+            val db = FirebaseFirestore.getInstance()
+            // Default Settings for the data base
+            val defaultSettings = mapOf(
+                "filter" to "Americano",
+                "theme" to "Dark Mode"
+            )
+
+            db.collection("users")
+                .document(result.uid)
+                .set(defaultSettings)
+                .await()  // Use await to make this a suspend function
+
+
             Log.v(TAG, "SignIn should work")
             AuthResult(user, Status.OK)
         } catch (e: Exception) {
