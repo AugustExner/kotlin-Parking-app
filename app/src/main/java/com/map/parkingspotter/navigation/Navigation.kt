@@ -65,8 +65,6 @@ fun Navigation() {//1234qweQWE!  test1@net.dk
 
     val tabBarItems = listOf(homeTab, profileTab, settingsTab)
 
-    val tabBarView = TabView(tabBarItems = tabBarItems, navController = controller)
-
 
     LaunchedEffect(key1 = isLoggedIn) {
         if (isLoggedIn) {
@@ -75,70 +73,59 @@ fun Navigation() {//1234qweQWE!  test1@net.dk
             controller.navigate("signup")
         }
     }
-    Column {
-
-        NavHost(controller, startDestination = "signUp") {
-            composable(route = "signUp") {
-                SignUp { email, password ->
-                    scope.launch {
-                        val res = service.signup(email, password)
-                        isLoggedIn = res.isOk()
+    Scaffold(
+        bottomBar = {
+            if (isLoggedIn) {
+                TabView(tabBarItems = tabBarItems, navController = controller)
+            }
+        }
+    ) { paddingValues ->
+        Column(modifier = Modifier.padding(paddingValues)) {
+            NavHost(
+                controller,
+                startDestination = if (isLoggedIn) homeTab.title else "signUp"
+            ) {
+                composable(route = "signUp") {
+                    SignUp { email, password ->
+                        scope.launch {
+                            val res = service.signup(email, password)
+                            isLoggedIn = res.isOk()
+                        }
                     }
                 }
-            }
-            composable(route = "signIn") {
-                SignIn { email, password ->
-                    scope.launch {
-                        val res = service.signIn(email, password)
-                        isLoggedIn = res.isOk()
+                composable(route = "signIn") {
+                    SignIn { email, password ->
+                        scope.launch {
+                            val res = service.signIn(email, password)
+                            isLoggedIn = res.isOk()
+                        }
                     }
                 }
-            }
-            /* composable(route = "horses") {
-                 LoggedIn {
-                     controller.navigate("horse/$it")
-                 }
-             }
-             composable(route = "horse/{id}") {
-                 val id = it.arguments?.getString("id") ?: ""
-                 var horse by remember { mutableStateOf<Horse?>(null) }
-                 LaunchedEffect(key1 = Unit) {
-                     horse = horseService.getHorse(id)
-                 }
-                 if (horse == null) {
-                     Text("Some error should be handled")
-                 } else {
-                     HorseDetailsItem(horse!!)
-                 }
-             }*/
-
-            composable(homeTab.title) {
-                Scaffold(bottomBar = { tabBarView }) {
+                composable(homeTab.title) {
                     Text(homeTab.title)
                 }
-            }
-            composable(profileTab.title) {
-                Scaffold(bottomBar = { tabBarView }) {
+                composable(profileTab.title) {
                     Text(profileTab.title)
                 }
-            }
-            composable(settingsTab.title) {
-                Scaffold(bottomBar = { tabBarView }) {
+                composable(settingsTab.title) {
                     Text(settingsTab.title)
                 }
             }
-        }
-        if (!isLoggedIn) {
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(10.dp),
-                modifier = Modifier.padding(top = 20.dp)
-            ) {
-                Text(
-                    text = "SignUp",
-                    modifier = Modifier.clickable { controller.navigate("signUp") })
-                Text(
-                    text = "SignIn",
-                    modifier = Modifier.clickable { controller.navigate("signIn") })
+
+            if (!isLoggedIn) {
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(10.dp),
+                    modifier = Modifier.padding(top = 20.dp)
+                ) {
+                    Text(
+                        text = "SignUp",
+                        modifier = Modifier.clickable { controller.navigate("signUp") }
+                    )
+                    Text(
+                        text = "SignIn",
+                        modifier = Modifier.clickable { controller.navigate("signIn") }
+                    )
+                }
             }
         }
     }
