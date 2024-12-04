@@ -21,11 +21,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             ParkingSpotterTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Box(modifier = Modifier.padding(innerPadding)) {
-                        Navigation()
-                    }
-                }
+                Navigation()
             }
         }
     }
