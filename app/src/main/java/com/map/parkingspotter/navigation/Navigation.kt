@@ -36,6 +36,8 @@ import com.map.parkingspotter.ui.components.menu.TabView
 import com.map.parkingspotter.ui.screen.LoggedIn
 import com.map.parkingspotter.ui.screen.auth.SignUp
 import com.map.parkingspotter.ui.screen.auth.SignIn
+import com.map.parkingspotter.ui.screen.home.HomeScreen
+import com.map.parkingspotter.ui.screen.settings.SettingsScreen
 import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -102,13 +104,13 @@ fun Navigation() {//1234qweQWE!  test1@net.dk
                     }
                 }
                 composable(homeTab.title) {
-                    Text(homeTab.title)
+                    HomeScreen()
                 }
                 composable(profileTab.title) {
                     Text(profileTab.title)
                 }
                 composable(settingsTab.title) {
-                    Text(settingsTab.title)
+                    SettingsScreen()
                 }
             }
 
