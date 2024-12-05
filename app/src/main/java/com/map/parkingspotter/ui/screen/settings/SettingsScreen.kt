@@ -13,7 +13,7 @@ import com.map.parkingspotter.ui.components.settings.DropdownList
 
 @Composable
 fun SettingsScreen(userSettingsViewModel: UserViewModel, userId: String, service: Service) {
-    val filterSettings = listOf("Americano", "Cappuccino", "Espresso", "Latte", "Mocha")
+    val filterSettings = listOf("Available Spots", "Price", "Espresso", "Latte", "Mocha")
     val themeSettings = listOf("Dark Mode", "Light Mode")
 
     val selectedFilter = userSettingsViewModel.filter.value

@@ -19,6 +19,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -27,6 +28,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.map.parkingspotter.integration.firebase.viewmodels.UserViewModel
 
 import com.map.parkingspotter.ui.components.parkingSpots.ParkingSpotsVejle
 import com.map.parkingspotter.ui.components.parkingSpots.ParkingSpotsViewModel
@@ -34,10 +36,16 @@ import com.map.parkingspotter.ui.components.parkingSpots.ParkingSpotsViewModel
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun HomeScreen() {
+fun HomeScreen(userSettingsViewModel: UserViewModel, userId: String) {
 
+    val setting = userSettingsViewModel.filter.value
     val sheetState = rememberModalBottomSheetState()
     var showBottomSheet by remember { mutableStateOf(false) }
+
+    LaunchedEffect(userId) {
+        userSettingsViewModel.loadUserSettings(userId)
+    }
+
 
     if (showBottomSheet) {
         ModalBottomSheet(
@@ -47,7 +55,7 @@ fun HomeScreen() {
             sheetState = sheetState
         ) {
             // Sheet content
-            ParkingSpotsVejle(viewModel = ParkingSpotsViewModel())
+            ParkingSpotsVejle(viewModel = ParkingSpotsViewModel(),setting)
         }
     }
 

@@ -14,19 +14,22 @@ class ParkingSpotsViewModel : ViewModel() {
     var parkingSpots: List<VejleParkingOverview> by mutableStateOf(emptyList())
         private set
 
-    fun fetchParkingSpots() {
+
+
+    fun fetchParkingSpots(settings: String) {
         viewModelScope.launch {
             try {
                 val response = VejleRetrofitClient.instance.getVejleParkingSpots()
                 parkingSpots = UpdatePrices(response)
+                filterParkingSpots(settings)
             } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
     }
 
-    private fun UpdatePrices(spots: List<VejleParkingOverview>): List<VejleParkingOverview> {
-        return spots.map { spot ->
+    private fun UpdatePrices(parkingSpots: List<VejleParkingOverview>): List<VejleParkingOverview> {
+        return parkingSpots.map { spot ->
             val updatedPrice = when (spot.parkeringsplads) {
                 "Bryggen" -> 14
                 "P-hus Cronhammar", "P-hus Albert" -> 9
@@ -34,6 +37,15 @@ class ParkingSpotsViewModel : ViewModel() {
                 else -> 6
             }
             spot.copy(price = updatedPrice)
+        }
+    }
+
+    private fun filterParkingSpots(filter: String, descending: Boolean = false) {
+        if(filter == "Price" && !descending) {
+            parkingSpots = parkingSpots.sortedBy { it.price }
+        }
+        if(filter == "Available Spots" && !descending) {
+            parkingSpots = parkingSpots.sortedByDescending { it.ledigePladser }
         }
     }
 }
