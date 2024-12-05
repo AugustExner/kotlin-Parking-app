@@ -1,4 +1,5 @@
 package com.map.parkingspotter.ui.components.parkingSpots
+import android.util.Log
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -56,6 +57,7 @@ fun ParkingSpotsVejle(
                     Text(text = "Available Spots: ${parkingSpot.ledigePladser}")
                     Text(text = "Occupied Spots: ${parkingSpot.optagedePladser}")
                     Text(text = "Price: ${parkingSpot.price}")
+                    Log.v("Location", parkingSpot.parkeringsplads)
                 }
             }
         }
