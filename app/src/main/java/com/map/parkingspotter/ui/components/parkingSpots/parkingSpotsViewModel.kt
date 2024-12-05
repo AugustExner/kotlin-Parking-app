@@ -18,26 +18,22 @@ class ParkingSpotsViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 val response = VejleRetrofitClient.instance.getVejleParkingSpots()
-                parkingSpots = response.map {spot -> updatePrice(spot)}
+                parkingSpots = UpdatePrices(response)
             } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
     }
 
-    fun updatePrice(specificSpot: VejleParkingOverview): VejleParkingOverview {
-        if (specificSpot.parkeringsplads == "Bryggen") {
-            specificSpot.price = 14
+    private fun UpdatePrices(spots: List<VejleParkingOverview>): List<VejleParkingOverview> {
+        return spots.map { spot ->
+            val updatedPrice = when (spot.parkeringsplads) {
+                "Bryggen" -> 14
+                "P-hus Cronhammar", "P-hus Albert" -> 9
+                "Gunhilds Plads" -> 8
+                else -> 6
+            }
+            spot.copy(price = updatedPrice)
         }
-        if (specificSpot.parkeringsplads == "P-hus Cronhammar" || specificSpot.parkeringsplads == "P-hus Albert") {
-            specificSpot.price = 9
-        }
-        if (specificSpot.parkeringsplads == "Gunhilds Plads") {
-            specificSpot.price = 8
-        }
-        else {
-            specificSpot.price = 6
-        }
-        return specificSpot.copy(price = specificSpot.price)
     }
 }
