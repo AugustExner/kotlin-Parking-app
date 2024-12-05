@@ -131,7 +131,7 @@ fun Navigation() {//1234qweQWE!  test1@net.dk
                     }
                 }
                 composable(homeTab.title) {
-                    HomeScreen()
+                    HomeScreen(userSettingsViewModel = userSettingsViewModel, userId)
                 }
                 composable(profileTab.title) {
                     Text(profileTab.title)

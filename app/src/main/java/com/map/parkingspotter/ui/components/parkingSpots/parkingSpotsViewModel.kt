@@ -14,12 +14,14 @@ class ParkingSpotsViewModel : ViewModel() {
     var parkingSpots: List<VejleParkingOverview> by mutableStateOf(emptyList())
         private set
 
-    fun fetchParkingSpots() {
+
+
+    fun fetchParkingSpots(settings: String) {
         viewModelScope.launch {
             try {
                 val response = VejleRetrofitClient.instance.getVejleParkingSpots()
                 parkingSpots = UpdatePrices(response)
-                filterParkingSpots("availableSpots", descending = true)
+                filterParkingSpots(settings)
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -39,17 +41,10 @@ class ParkingSpotsViewModel : ViewModel() {
     }
 
     private fun filterParkingSpots(filter: String, descending: Boolean = false) {
-        if(filter == "price" && !descending) {
+        if(filter == "Price" && !descending) {
             parkingSpots = parkingSpots.sortedBy { it.price }
         }
-        else if(filter == "price" && descending) {
-            parkingSpots = parkingSpots.sortedByDescending { it.price }
-        }
-
-        if(filter == "availableSpots" && !descending) {
-            parkingSpots = parkingSpots.sortedBy { it.ledigePladser }
-        }
-        else if(filter == "availableSpots" && descending) {
+        if(filter == "Available Spots" && !descending) {
             parkingSpots = parkingSpots.sortedByDescending { it.ledigePladser }
         }
     }
