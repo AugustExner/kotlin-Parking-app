@@ -51,4 +51,9 @@ class Service {
             null
         }
     }
+
+
+    suspend fun updateUserSettings(userId: String, settings: UserData) {
+        db.collection(USERS_COLLECTION_NAME).document(userId).set(settings).await()
+    }
 }

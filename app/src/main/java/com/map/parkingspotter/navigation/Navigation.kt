@@ -54,7 +54,7 @@ fun Navigation() {//1234qweQWE!  test1@net.dk
 
     var userId by remember { mutableStateOf("")}
 
-    val userSettingsViewModel: UserViewModel = viewModel()
+    val userSettingsViewModel = remember {UserViewModel(userService)}
 
     val homeTab = TabBarItem(
         title = "Home",
