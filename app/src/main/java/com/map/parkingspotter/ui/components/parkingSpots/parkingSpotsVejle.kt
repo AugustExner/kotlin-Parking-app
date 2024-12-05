@@ -22,7 +22,9 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun ParkingSpotsVejle(
-    viewModel: ParkingSpotsViewModel
+    viewModel: ParkingSpotsViewModel,
+    settings: String
+
 ) {
     // Coroutine scope for launching background tasks
     val coroutineScope = rememberCoroutineScope()
@@ -30,7 +32,7 @@ fun ParkingSpotsVejle(
     // Fetch parking spots when the composable is first composed
     LaunchedEffect(Unit) {
         coroutineScope.launch {
-                viewModel.fetchParkingSpots()
+                viewModel.fetchParkingSpots(settings)
         }
     }
         // Display parking spots in a lazy column
@@ -52,6 +54,7 @@ fun ParkingSpotsVejle(
             ) {
                 Column(
                 ) {
+                    Text(text = "Settings: ${settings}")
                     Text(text = "Location: ${parkingSpot.parkeringsplads}")
                     Text(text = "Total Spots: ${parkingSpot.antalPladser}")
                     Text(text = "Available Spots: ${parkingSpot.ledigePladser}")
