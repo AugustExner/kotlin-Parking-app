@@ -53,8 +53,6 @@ fun GoogleMaps(
         position = CameraPosition.fromLatLngZoom(usersPosition, 10f)
     }
 
-
-
     GoogleMap(
         modifier = Modifier.fillMaxSize(),
         cameraPositionState = cameraPositionState
