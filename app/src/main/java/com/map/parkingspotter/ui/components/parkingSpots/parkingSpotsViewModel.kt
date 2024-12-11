@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.map.parkingspotter.integration.vejleAPI.VejleParkingOverview
 import com.map.parkingspotter.integration.vejleAPI.VejleRetrofitClient
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class ParkingSpotsViewModel : ViewModel() {
@@ -16,12 +15,23 @@ class ParkingSpotsViewModel : ViewModel() {
 
 
 
-    fun fetchParkingSpots(settings: String) {
+    fun fetchParkingSpotsWithSettings(settings: String) {
         viewModelScope.launch {
             try {
                 val response = VejleRetrofitClient.instance.getVejleParkingSpots()
                 parkingSpots = UpdatePrices(response)
                 filterParkingSpots(settings)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    fun fetchParkingSpots() {
+        viewModelScope.launch {
+            try {
+                val response = VejleRetrofitClient.instance.getVejleParkingSpots()
+                parkingSpots = UpdatePrices(response)
             } catch (e: Exception) {
                 e.printStackTrace()
             }

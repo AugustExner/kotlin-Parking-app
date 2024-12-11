@@ -27,17 +27,26 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import com.google.android.gms.location.LocationServices
+
 import com.map.parkingspotter.integration.firebase.viewmodels.UserViewModel
 
 import com.map.parkingspotter.ui.components.parkingSpots.ParkingSpotsVejle
 import com.map.parkingspotter.ui.components.parkingSpots.ParkingSpotsViewModel
+import com.map.parkingspotter.ui.screen.home.google.GetLocations
+import com.map.parkingspotter.ui.screen.home.google.MapsService
+import kotlinx.coroutines.launch
 
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun HomeScreen(userSettingsViewModel: UserViewModel, userId: String) {
+fun HomeScreen(viewModel: ParkingSpotsViewModel, userSettingsViewModel: UserViewModel, userId: String) {
 
+    val context = LocalContext.current
+    val locationClient by lazy { LocationServices.getFusedLocationProviderClient(context) }
+    val coroutineScope = rememberCoroutineScope()
     val setting = userSettingsViewModel.filter.value
     val sheetState = rememberModalBottomSheetState()
     var showBottomSheet by remember { mutableStateOf(false) }
@@ -45,7 +54,11 @@ fun HomeScreen(userSettingsViewModel: UserViewModel, userId: String) {
     LaunchedEffect(userId) {
         userSettingsViewModel.loadUserSettings(userId)
     }
-
+    LaunchedEffect(Unit) {
+        coroutineScope.launch {
+            viewModel.fetchParkingSpotsWithSettings(setting)
+        }
+    }
 
     if (showBottomSheet) {
         ModalBottomSheet(
@@ -68,6 +81,9 @@ fun HomeScreen(userSettingsViewModel: UserViewModel, userId: String) {
             ) {
                 // Main content of the screen goes here
                 Text(text = "Welcome to Home Screen")
+
+                //GoogleMaps()
+                GetLocations(MapsService(locationClient), viewModel)
 
                 IconButton(
                     onClick = { showBottomSheet = true },

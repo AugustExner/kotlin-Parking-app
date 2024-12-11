@@ -52,6 +52,10 @@ android {
 }
 
 dependencies {
+    //Maps //WHY BUG Do not use 6.2.1
+    implementation("com.google.maps.android:maps-compose:4.3.3")
+    implementation("com.google.android.gms:play-services-location:21.1.0")
+    implementation("com.google.accompanist:accompanist-permissions:0.35.0-alpha")
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -81,3 +85,38 @@ dependencies {
     implementation (libs.androidx.lifecycle.viewmodel.compose)
     implementation (libs.androidx.lifecycle.livedata)
 }
+
+//dependencies {
+//    //Maps
+//    implementation(libs.maps.compose)
+//
+//    implementation(libs.androidx.core.ktx)
+//    implementation(libs.androidx.lifecycle.runtime.ktx)
+//    implementation(libs.androidx.activity.compose)
+//    implementation(platform(libs.androidx.compose.bom))
+//    implementation(libs.androidx.ui)
+//    implementation(libs.androidx.ui.graphics)
+//    implementation(libs.androidx.ui.tooling.preview)
+//    implementation(libs.androidx.material3)
+//    implementation(libs.firebase.auth.ktx)
+//    implementation(libs.androidx.navigation.compose)
+//    implementation(libs.play.services.maps)
+//    testImplementation(libs.junit)
+//    androidTestImplementation(libs.androidx.junit)
+//    androidTestImplementation(libs.androidx.espresso.core)
+//    androidTestImplementation(platform(libs.androidx.compose.bom))
+//    androidTestImplementation(libs.androidx.ui.test.junit4)
+//    debugImplementation(libs.androidx.ui.tooling)
+//    debugImplementation(libs.androidx.ui.test.manifest)
+//
+//
+//    implementation(platform("com.google.firebase:firebase-bom:33.5.1"))
+//    implementation("com.google.firebase:firebase-firestore")
+//    implementation(libs.google.firebase.auth)
+//
+//    // Retrofit and Coroutines
+//    implementation (libs.retrofit2.retrofit)
+//    implementation (libs.converter.gson)
+//    implementation (libs.androidx.lifecycle.viewmodel.compose)
+//    implementation (libs.androidx.lifecycle.livedata)
+//}

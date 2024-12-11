@@ -14,7 +14,10 @@ googlefirebase="33.5.1"
 googleplayserviceauth="21.2.0"
 firebaseAuthKtx = "23.1.0"
 lifecycleViewmodelCompose = "2.8.7"
+mapsCompose = "6.2.1"
+mapsComposeVersion = "4.3.3"
 navigationCompose = "2.8.3"
+playServicesMaps = "19.0.0"
 retrofitVersion = "2.9.0"
 
 [libraries]
@@ -42,6 +45,9 @@ google-android-gms-play-services = { group = "com.google.android.gms", name = "p
 google-firebase-storage = { group = "com.google.firebase", name = "firebase-storage" }
 firebase-auth-ktx = { group = "com.google.firebase", name = "firebase-auth-ktx", version.ref = "firebaseAuthKtx" }
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
+maps-compose = { module = "com.google.maps.android:maps-compose", version.ref = "mapsCompose" }
+maps-compose-v433 = { module = "com.google.maps.android:maps-compose", version.ref = "mapsComposeVersion" }
+play-services-maps = { module = "com.google.android.gms:play-services-maps", version.ref = "playServicesMaps" }
 retrofit2-retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofitVersion" }
 
 [plugins]
