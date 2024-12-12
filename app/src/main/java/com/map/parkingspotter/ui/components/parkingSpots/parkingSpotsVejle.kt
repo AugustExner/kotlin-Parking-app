@@ -28,7 +28,8 @@ import com.map.parkingspotter.integration.DirectionAPI.makeApiCallTestWithOrigin
 @Composable
 fun ParkingSpotsVejle(
     viewModel: ParkingSpotsViewModel,
-    settings: String
+    settings: String,
+    destination: String
 ) {
     val context = LocalContext.current
     val openAlertDialog = remember { mutableStateOf(false) }
@@ -41,7 +42,7 @@ fun ParkingSpotsVejle(
     // Fetch parking spots when the composable is first composed
     LaunchedEffect(Unit) {
         launch {
-            viewModel.fetchParkingSpotsWithSettings(settings)
+            viewModel.fetchParkingSpotsWithSettings(settings, destination)
             makeApiCallTestWithOriginAndDestinationParameter()
         }
     }

@@ -14,6 +14,7 @@ class DirectionsViewModel : ViewModel() {
                 val response = RetrofitInstance.api.getDirections(
                     origin = "Aarhus",
                     destination = "Vejle Rådhus",
+                    mode = "walking",
                     apiKey = "AIzaSyDgORILdn4tqoGRbvGsH3eKXix5LGPldi8"
                 )
                 // Assuming you want to display the distance and duration of the first route's first leg

@@ -16,6 +16,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -30,6 +31,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.google.android.gms.location.LocationServices
 import com.map.parkingspotter.integration.DirectionAPI.makeApiCall
@@ -38,6 +40,7 @@ import com.map.parkingspotter.integration.firebase.viewmodels.UserViewModel
 
 import com.map.parkingspotter.ui.components.parkingSpots.ParkingSpotsVejle
 import com.map.parkingspotter.ui.components.parkingSpots.ParkingSpotsViewModel
+import com.map.parkingspotter.ui.screen.home.SearchBar.DestinationSearchBar
 import com.map.parkingspotter.ui.screen.home.google.GetLocations
 import com.map.parkingspotter.ui.screen.home.google.MapsService
 import kotlinx.coroutines.launch
@@ -53,13 +56,14 @@ fun HomeScreen(viewModel: ParkingSpotsViewModel, userSettingsViewModel: UserView
     val setting = userSettingsViewModel.filter.value
     val sheetState = rememberModalBottomSheetState()
     var showBottomSheet by remember { mutableStateOf(false) }
+    var destination by remember { mutableStateOf("") }
 
     LaunchedEffect(userId) {
         userSettingsViewModel.loadUserSettings(userId)
     }
     LaunchedEffect(Unit) {
         coroutineScope.launch {
-            viewModel.fetchParkingSpotsWithSettings(setting)
+            viewModel.fetchParkingSpotsWithSettings(setting, destination)
         }
     }
 
@@ -71,7 +75,7 @@ fun HomeScreen(viewModel: ParkingSpotsViewModel, userSettingsViewModel: UserView
             sheetState = sheetState
         ) {
             // Sheet content
-            ParkingSpotsVejle(viewModel = ParkingSpotsViewModel(),setting)
+            ParkingSpotsVejle(viewModel = ParkingSpotsViewModel(),setting, destination)
         }
     }
 
@@ -80,19 +84,19 @@ fun HomeScreen(viewModel: ParkingSpotsViewModel, userSettingsViewModel: UserView
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(innerPadding)
+                    .padding(0.dp)
             ) {
-                // Main content of the screen goes here
-                Text(text = "Welcome to Home Screen")
+                Column(){
+                    Text(
+                        text = "Home Screen",
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth(),
+                        color = MaterialTheme.colorScheme.onSurface,
+                    )
+                    DestinationSearchBar(onDestinationChange = { destination = it }, onSearch = {showBottomSheet = true})
 
-                //GoogleMaps()
-                GetLocations(MapsService(locationClient), viewModel)
-                DirectionsScreen()
-                Button(onClick = {
-
-                    Log.v("Distance", "makeApiCall() -->")
-                    makeApiCall() })  {
-
+                    //GoogleMaps()
+                    GetLocations(MapsService(locationClient), viewModel)
                 }
 
                 IconButton(

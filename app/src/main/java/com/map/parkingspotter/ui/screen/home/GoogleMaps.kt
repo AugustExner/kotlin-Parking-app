@@ -11,6 +11,7 @@ import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.google.maps.android.compose.rememberMarkerState
 import com.map.parkingspotter.ui.components.parkingSpots.ParkingSpotsViewModel
+import com.map.parkingspotter.ui.screen.home.SearchBar.DestinationSearchBar
 import com.map.parkingspotter.ui.screen.home.google.CustomMapBoxMarker
 import kotlinx.coroutines.launch
 
@@ -38,6 +39,8 @@ fun GoogleMaps(
         modifier = Modifier.fillMaxSize(),
         cameraPositionState = cameraPositionState
     ) {
+
+
         viewModel.parkingSpots.forEach { parkingSpot ->
             CustomMapBoxMarker(
                 parkingSpot.latitude.toDouble(),
