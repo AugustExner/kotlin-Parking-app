@@ -1,4 +1,5 @@
 package com.map.parkingspotter.ui.screen.home
+import DirectionsScreen
 import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -86,7 +87,7 @@ fun HomeScreen(viewModel: ParkingSpotsViewModel, userSettingsViewModel: UserView
 
                 //GoogleMaps()
                 GetLocations(MapsService(locationClient), viewModel)
-
+                DirectionsScreen()
                 Button(onClick = {
 
                     Log.v("Distance", "makeApiCall() -->")
