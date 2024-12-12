@@ -1,4 +1,5 @@
 package com.map.parkingspotter.ui.components.parkingSpots
+
 import android.content.Intent
 import android.net.Uri
 import android.util.Log
@@ -22,7 +23,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.map.parkingspotter.ui.components.Dialog.AlertDialogExample
 import kotlinx.coroutines.launch
-
+import com.map.parkingspotter.integration.DirectionAPI.makeApiCallTestWithOriginAndDestinationParameter
 
 @Composable
 fun ParkingSpotsVejle(
@@ -41,17 +42,20 @@ fun ParkingSpotsVejle(
     LaunchedEffect(Unit) {
         launch {
             viewModel.fetchParkingSpotsWithSettings(settings)
+            makeApiCallTestWithOriginAndDestinationParameter()
         }
     }
+
 
     // Display the alert dialog when needed
     if (openAlertDialog.value) {
         AlertDialogExample(
             onDismissRequest = { openAlertDialog.value = false },
 
-            onConfirmation = { openAlertDialog.value = false
+            onConfirmation = {
+                openAlertDialog.value = false
                 val gmmIntentUri = Uri.parse("google.navigation:q=$selectedLatitude,$selectedLongitude&mode=d")
-                val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri).apply{
+                val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri).apply {
                     setPackage("com.google.android.apps.maps")
                 }
                 // Check if there's an app to handle the intent
@@ -60,7 +64,8 @@ fun ParkingSpotsVejle(
                 } else {
                     Toast.makeText(context, "Google Maps is not installed", Toast.LENGTH_SHORT).show()
                 }
-               println("Start Google Maps") },
+                println("Start Google Maps")
+            },
 
             dialogTitle = dialogTitle,
             dialogText = dialogText,
@@ -71,6 +76,7 @@ fun ParkingSpotsVejle(
     // Display parking spots in a lazy column
     LazyColumn {
         items(viewModel.parkingSpots) { parkingSpot ->
+
             Card(
                 onClick = {
                     dialogTitle = "${parkingSpot.parkeringsplads} "
@@ -93,17 +99,16 @@ fun ParkingSpotsVejle(
                 elevation = CardDefaults.cardElevation(4.dp)
             ) {
                 Column {
+                    Log.v("Location", parkingSpot.parkeringsplads)
                     Text(text = "Settings: $settings")
                     Text(text = "Location: ${parkingSpot.parkeringsplads}")
                     Text(text = "Total Spots: ${parkingSpot.antalPladser}")
                     Text(text = "Available Spots: ${parkingSpot.ledigePladser}")
                     Text(text = "Occupied Spots: ${parkingSpot.optagedePladser}")
                     Text(text = "Price: ${parkingSpot.price}")
-                    Log.v("Location", parkingSpot.parkeringsplads)
+                    Text(text = "Distance: ${parkingSpot.distance} ")
                 }
             }
         }
     }
 }
-
-

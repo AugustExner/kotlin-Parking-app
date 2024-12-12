@@ -5,6 +5,8 @@ plugins {
     //alias(libs.plugins.google.gms.services)
 }
 
+
+
 android {
     namespace = "com.map.parkingspotter"
     compileSdk = 34
@@ -15,6 +17,8 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
+        // Add the API key to BuildConfig
+
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -54,8 +58,16 @@ android {
 dependencies {
     //Maps //WHY BUG Do not use 6.2.1
     implementation("com.google.maps.android:maps-compose:4.3.3")
-    implementation("com.google.android.gms:play-services-location:21.1.0")
+    implementation(libs.play.services.location)
     implementation("com.google.accompanist:accompanist-permissions:0.35.0-alpha")
+
+    //Directions dependancies
+    implementation (libs.google.maps.services)
+    implementation(libs.android.maps.utils)
+
+    implementation(libs.android.maps.compose)
+    implementation(libs.gms.play.services.location)
+    //implementation("com.google.android.gms")
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.map.parkingspotter.integration.DirectionAPI.makeApiCallTestWithOriginAndDestinationParameter
 import com.map.parkingspotter.integration.vejleAPI.VejleParkingOverview
 import com.map.parkingspotter.integration.vejleAPI.VejleRetrofitClient
 import kotlinx.coroutines.launch
@@ -12,8 +13,6 @@ import kotlinx.coroutines.launch
 class ParkingSpotsViewModel : ViewModel() {
     var parkingSpots: List<VejleParkingOverview> by mutableStateOf(emptyList())
         private set
-
-
 
     fun fetchParkingSpotsWithSettings(settings: String) {
         viewModelScope.launch {
@@ -50,11 +49,12 @@ class ParkingSpotsViewModel : ViewModel() {
         }
     }
 
+
     private fun filterParkingSpots(filter: String, descending: Boolean = false) {
-        if(filter == "Price" && !descending) {
+        if (filter == "Price" && !descending) {
             parkingSpots = parkingSpots.sortedBy { it.price }
         }
-        if(filter == "Available Spots" && !descending) {
+        if (filter == "Available Spots" && !descending) {
             parkingSpots = parkingSpots.sortedByDescending { it.ledigePladser }
         }
     }

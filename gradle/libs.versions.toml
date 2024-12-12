@@ -1,6 +1,8 @@
 [versions]
 agp = "8.5.2"
+androidMapsUtils = "0.5"
 converterGson = "2.9.0"
+googleMapsServices = "2.2.0"
 kotlin = "1.9.0"
 coreKtx = "1.13.1"
 junit = "4.13.2"
@@ -17,14 +19,20 @@ lifecycleViewmodelCompose = "2.8.7"
 mapsCompose = "6.2.1"
 mapsComposeVersion = "4.3.3"
 navigationCompose = "2.8.3"
+playServicesLocation = "21.1.0"
 playServicesMaps = "19.0.0"
+playServicesMapsVersion = "20.0.0"
 retrofitVersion = "2.9.0"
 
 [libraries]
+android-maps-compose = { module = "com.google.maps.android:maps-compose" }
+android-maps-utils = { module = "com.google.maps.android:android-maps-utils", version.ref = "androidMapsUtils" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-lifecycle-livedata = { module = "androidx.lifecycle:lifecycle-livedata", version.ref = "lifecycleViewmodelCompose" }
 androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycleViewmodelCompose" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
+gms-play-services-location = { module = "com.google.android.gms:play-services-location" }
+google-maps-services = { module = "com.google.maps:google-maps-services", version.ref = "googleMapsServices" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
@@ -45,9 +53,10 @@ google-android-gms-play-services = { group = "com.google.android.gms", name = "p
 google-firebase-storage = { group = "com.google.firebase", name = "firebase-storage" }
 firebase-auth-ktx = { group = "com.google.firebase", name = "firebase-auth-ktx", version.ref = "firebaseAuthKtx" }
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
-maps-compose = { module = "com.google.maps.android:maps-compose", version.ref = "mapsCompose" }
 maps-compose-v433 = { module = "com.google.maps.android:maps-compose", version.ref = "mapsComposeVersion" }
+play-services-location = { module = "com.google.android.gms:play-services-location", version.ref = "playServicesLocation" }
 play-services-maps = { module = "com.google.android.gms:play-services-maps", version.ref = "playServicesMaps" }
+play-services-maps-v2000 = { module = "com.google.android.gms:play-services-maps", version.ref = "playServicesMapsVersion" }
 retrofit2-retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofitVersion" }
 
 [plugins]

@@ -7,6 +7,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,13 +30,16 @@ fun CustomMapBoxMarker(
     val location = LatLng(latitude, longitude)
     val markerState = remember { MarkerState(position = location) }
 
+
     MarkerComposable(
         state = markerState,
     ) {
         OutlinedCard(
             modifier = Modifier
                 .width(260.dp)
-                .padding(8.dp)
+                .padding(8.dp),
+            colors = CardDefaults.outlinedCardColors(containerColor = MaterialTheme.colorScheme.surface),
+            border = BorderStroke(1.dp, Color.Gray)
         ) {
             Column(
                 modifier = Modifier.padding(8.dp),
@@ -43,40 +47,46 @@ fun CustomMapBoxMarker(
             ) {
                 Row(
                     horizontalArrangement = Arrangement.SpaceBetween,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Text(
-                        text = "Location:",
-                    )
+                    modifier = Modifier.fillMaxWidth())
+                {
                     Text(
                         text = name,
-                        textAlign = TextAlign.End
+                        textAlign = TextAlign.Start,
+                        modifier = Modifier.fillMaxWidth(),
+                        color = MaterialTheme.colorScheme.onSurface,
                     )
                 }
-                Row(
+                Row (
                     horizontalArrangement = Arrangement.SpaceBetween,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
+                    modifier = Modifier.fillMaxWidth()) {
                     Text(
                         text = "Available Spots:",
+                        textAlign = TextAlign.Start,
+                        fontSize = 14.sp
                     )
                     Text(
                         text = "$ledigePladser/$antalPladser",
-                        textAlign = TextAlign.End
+                        textAlign = TextAlign.End,
+                        fontSize = 14.sp
                     )
                 }
                 Row(
                     horizontalArrangement = Arrangement.SpaceBetween,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
+                    modifier = Modifier.fillMaxWidth())
+                {
                     Text(
                         text = "Price:",
+                        textAlign = TextAlign.Start,
+                        fontSize = 14.sp
                     )
                     Text(
-                        text = "$price DKK",
-                        textAlign = TextAlign.End
+                        text = "$price DKK/t",
+                        textAlign = TextAlign.End,
+                        fontSize = 14.sp
                     )
                 }
+
+
             }
         }
     }

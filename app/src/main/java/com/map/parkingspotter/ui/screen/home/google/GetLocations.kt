@@ -36,7 +36,6 @@ fun GetLocations(mapsService: MapsService, viewModel: ParkingSpotsViewModel,) {
         granted.value = isGranted
     }
     val currentLocation = remember { mutableStateOf<Location?>(null) }
-    val scope = rememberCoroutineScope()
 
     LaunchedEffect(key1 = Unit) {
         if (!granted.value) {

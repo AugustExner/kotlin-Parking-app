@@ -1,4 +1,5 @@
 package com.map.parkingspotter.ui.screen.home
+import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -30,6 +31,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.google.android.gms.location.LocationServices
+import com.map.parkingspotter.integration.DirectionAPI.makeApiCall
 
 import com.map.parkingspotter.integration.firebase.viewmodels.UserViewModel
 
@@ -84,6 +86,13 @@ fun HomeScreen(viewModel: ParkingSpotsViewModel, userSettingsViewModel: UserView
 
                 //GoogleMaps()
                 GetLocations(MapsService(locationClient), viewModel)
+
+                Button(onClick = {
+
+                    Log.v("Distance", "makeApiCall() -->")
+                    makeApiCall() })  {
+
+                }
 
                 IconButton(
                     onClick = { showBottomSheet = true },
