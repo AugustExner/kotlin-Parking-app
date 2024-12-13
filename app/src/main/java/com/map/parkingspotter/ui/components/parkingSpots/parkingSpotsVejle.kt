@@ -34,6 +34,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.map.parkingspotter.ui.components.Dialog.AlertDialogExample
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
@@ -49,6 +50,8 @@ fun ParkingSpotsVejle(
     var selectedLatitude by remember { mutableStateOf(0.0) }
     var selectedLongitude by remember { mutableStateOf(0.0) }
     var selectedName by remember { mutableStateOf("") }
+    var selectedPercentage by remember { mutableStateOf(0) }
+    val isNavigationStarted = remember { mutableStateOf(false) }
 
 
     // Fetch parking spots when the composable is first composed
@@ -58,6 +61,21 @@ fun ParkingSpotsVejle(
         }
     }
 
+    fun startNavigation(latitude: Double, longitude: Double) {
+        val gmmIntentUri = Uri.parse("google.navigation:q=$latitude,$longitude&mode=d")
+        val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri).apply {
+            setPackage("com.google.android.apps.maps")
+            Log.v("Navigation", "Navigation started")
+        }
+        // Check if there's an app to handle the intent
+        if (mapIntent.resolveActivity(context.packageManager) != null) {
+            context.startActivity(mapIntent)
+        } else {
+            Toast.makeText(context, "Google Maps is not installed", Toast.LENGTH_SHORT).show()
+        }
+        println("Start Google Maps")
+    }
+
 
     // Display the alert dialog when needed
     if (openAlertDialog.value) {
@@ -65,18 +83,9 @@ fun ParkingSpotsVejle(
             onDismissRequest = { openAlertDialog.value = false },
 
             onConfirmation = {
+                isNavigationStarted.value = true
                 openAlertDialog.value = false
-                val gmmIntentUri = Uri.parse("google.navigation:q=$selectedLatitude,$selectedLongitude&mode=d")
-                val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri).apply {
-                    setPackage("com.google.android.apps.maps")
-                }
-                // Check if there's an app to handle the intent
-                if (mapIntent.resolveActivity(context.packageManager) != null) {
-                    context.startActivity(mapIntent)
-                } else {
-                    Toast.makeText(context, "Google Maps is not installed", Toast.LENGTH_SHORT).show()
-                }
-                println("Start Google Maps")
+                startNavigation(selectedLatitude, selectedLongitude)
             },
 
             dialogTitle = dialogTitle,
@@ -84,6 +93,33 @@ fun ParkingSpotsVejle(
             icon = Icons.Default.Info
         )
     }
+
+    // Check if we should reroute
+//    LaunchedEffect(isNavigationStarted.value) {
+//        if (isNavigationStarted.value && selectedPercentage < 10) {
+//            Log.v("reroute", "Reroute should begin after 5 sec")
+//            delay(1000)
+//            startNavigation(56.132731, 10.196614)
+//
+////            // Ensure parking spots list is not empty
+////            if (viewModel.parkingSpots.isNotEmpty()) {
+////                val firstSpot = viewModel.parkingSpots.first()
+////                Log.v("reroute", "Found new spot: ${firstSpot.parkeringsplads}")
+////                // Update selected spot details for potential UI feedback
+////                selectedLatitude = firstSpot.latitude.toDouble()
+////                selectedLongitude = firstSpot.longitude.toDouble()
+////                selectedName = firstSpot.parkeringsplads
+////                selectedPercentage = firstSpot.percentage
+////
+////                // Start navigation to the first spot
+////                startNavigation(selectedLatitude, selectedLongitude)
+////            } else {
+////                Log.v("reroute", "No parking spots available for rerouting")
+////            }
+//        }
+//    }
+
+
 
     // Display parking spots in a lazy column
     LazyColumn {
@@ -98,6 +134,7 @@ fun ParkingSpotsVejle(
                     selectedLatitude = parkingSpot.latitude.toDouble()
                     selectedLongitude = parkingSpot.longitude.toDouble()
                     selectedName = parkingSpot.parkeringsplads
+                    selectedPercentage = parkingSpot.percentage
                 },
                 shape = RoundedCornerShape(16.dp),
                 colors = CardDefaults.cardColors(containerColor = Color(0xFFECEFF1)),

@@ -1,7 +1,9 @@
 package com.map.parkingspotter.ui.screen.home.google
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
@@ -19,13 +21,15 @@ import com.google.maps.android.compose.MarkerComposable
 import com.google.maps.android.compose.MarkerState
 
 @Composable
-fun CustomMapBoxMarker(
+fun CustomMarkerParkingSpot(
     latitude: Double,
     longitude: Double,
     name: String,
     antalPladser: Int,
     ledigePladser: Int,
     price: Int,
+
+
 ) {
     val location = LatLng(latitude, longitude)
     val markerState = remember { MarkerState(position = location) }
@@ -38,8 +42,11 @@ fun CustomMapBoxMarker(
             modifier = Modifier
                 .width(260.dp)
                 .padding(8.dp),
+            border = BorderStroke(1.dp, Color.Gray),
             colors = CardDefaults.outlinedCardColors(containerColor = MaterialTheme.colorScheme.surface),
-            border = BorderStroke(1.dp, Color.Gray)
+
+
+
         ) {
             Column(
                 modifier = Modifier.padding(8.dp),
@@ -85,8 +92,6 @@ fun CustomMapBoxMarker(
                         fontSize = 14.sp
                     )
                 }
-
-
             }
         }
     }

@@ -82,7 +82,7 @@ fun HomeScreen(viewModel: ParkingSpotsViewModel, userSettingsViewModel: UserView
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(0.dp)
+                    .padding(0.dp) 
             ) {
                 Column(){
                     Text(
