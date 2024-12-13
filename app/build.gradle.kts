@@ -94,10 +94,9 @@ dependencies {
     implementation (libs.androidx.lifecycle.viewmodel.compose)
     implementation (libs.androidx.lifecycle.livedata)
 
-    implementation("androidx.compose.ui:ui:1.6.0")
-    implementation("androidx.compose.material:material:1.6.0")
-    implementation("androidx.compose.ui:ui-tooling-preview:1.6.0")
-    implementation("androidx.compose.foundation:foundation:1.6.0")
+    //implementation("androidx.compose.ui:ui:1.6.0")
+    //implementation("androidx.compose.ui:ui-tooling-preview:1.6.0")
+    //implementation("androidx.compose.foundation:foundation:1.6.0")
 
-    implementation("androidx.compose.material3:material3")
+    //implementation("androidx.compose.material3:material3")
 }
