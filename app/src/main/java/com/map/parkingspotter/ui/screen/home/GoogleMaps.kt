@@ -19,7 +19,8 @@ import kotlinx.coroutines.launch
 fun GoogleMaps(
     viewModel: ParkingSpotsViewModel,
     latitude: Double,
-    longitude: Double
+    longitude: Double,
+
 ) {
 
     LaunchedEffect(Unit) {
@@ -31,6 +32,7 @@ fun GoogleMaps(
     val usersPosition = LatLng(latitude, longitude)
     val usersMarkerState = rememberMarkerState(position = usersPosition)
 
+
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(usersPosition, 10f)
     }
@@ -39,8 +41,6 @@ fun GoogleMaps(
         modifier = Modifier.fillMaxSize(),
         cameraPositionState = cameraPositionState
     ) {
-
-
         viewModel.parkingSpots.forEach { parkingSpot ->
             CustomMapBoxMarker(
                 parkingSpot.latitude.toDouble(),

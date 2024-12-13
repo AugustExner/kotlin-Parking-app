@@ -18,7 +18,7 @@ import com.map.parkingspotter.ui.screen.home.GoogleMaps
 private const val PERMISSION = "android.permission.ACCESS_FINE_LOCATION"
 
 @Composable
-fun GetLocations(mapsService: MapsService, viewModel: ParkingSpotsViewModel,) {
+fun GetLocations(mapsService: MapsService, viewModel: ParkingSpotsViewModel) {
 
     val context = LocalContext.current
     val granted = remember {
@@ -55,5 +55,4 @@ fun GetLocations(mapsService: MapsService, viewModel: ParkingSpotsViewModel,) {
     } else {
         Text("Fetching current location...")
     }
-
 }

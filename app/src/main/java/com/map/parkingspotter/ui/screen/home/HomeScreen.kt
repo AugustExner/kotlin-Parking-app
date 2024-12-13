@@ -1,5 +1,6 @@
 package com.map.parkingspotter.ui.screen.home
 import DirectionsScreen
+//import android.location.Location
 import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -34,10 +35,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.google.android.gms.location.LocationServices
-import com.map.parkingspotter.integration.DirectionAPI.makeApiCall
-
+import com.map.parkingspotter.domain.Directions.Location
 import com.map.parkingspotter.integration.firebase.viewmodels.UserViewModel
-
 import com.map.parkingspotter.ui.components.parkingSpots.ParkingSpotsVejle
 import com.map.parkingspotter.ui.components.parkingSpots.ParkingSpotsViewModel
 import com.map.parkingspotter.ui.screen.home.SearchBar.DestinationSearchBar
@@ -57,6 +56,7 @@ fun HomeScreen(viewModel: ParkingSpotsViewModel, userSettingsViewModel: UserView
     val sheetState = rememberModalBottomSheetState()
     var showBottomSheet by remember { mutableStateOf(false) }
     var destination by remember { mutableStateOf("") }
+    var destinationLatLong by remember { mutableStateOf(Location(lat = 0.0, lng = 0.0)) }
 
     LaunchedEffect(userId) {
         userSettingsViewModel.loadUserSettings(userId)
@@ -93,10 +93,15 @@ fun HomeScreen(viewModel: ParkingSpotsViewModel, userSettingsViewModel: UserView
                         modifier = Modifier.fillMaxWidth(),
                         color = MaterialTheme.colorScheme.onSurface,
                     )
-                    DestinationSearchBar(onDestinationChange = { destination = it }, onSearch = {showBottomSheet = true})
+                    DestinationSearchBar(onDestinationChange = { destination = it },
+                        onSearch = {
+                            destinationLatLong = viewModel.destinationState
+                            showBottomSheet = true
+                    })
 
                     //GoogleMaps()
                     GetLocations(MapsService(locationClient), viewModel)
+
                 }
 
                 IconButton(
