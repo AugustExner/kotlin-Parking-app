@@ -1,5 +1,7 @@
 package com.map.parkingspotter.integration.vejleAPI
 
+import com.google.type.LatLng
+
 data class VejleParkingOverview(
     val id: Int,
     val parkeringsplads: String,
@@ -9,5 +11,7 @@ data class VejleParkingOverview(
     val latitude: String,
     val longitude: String,
     var distance: Int,
-    var price: Int
+    var walkingTime: Int,
+    var price: Int,
+    var percentage: Int,
 )

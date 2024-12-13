@@ -52,6 +52,18 @@ android {
 }
 
 dependencies {
+    //Maps //WHY BUG Do not use 6.2.1
+    implementation("com.google.maps.android:maps-compose:4.3.3")
+    implementation(libs.play.services.location)
+    implementation("com.google.accompanist:accompanist-permissions:0.35.0-alpha")
+
+    //Directions dependancies
+    implementation (libs.google.maps.services)
+    implementation(libs.android.maps.utils)
+
+    implementation(libs.android.maps.compose)
+    implementation(libs.gms.play.services.location)
+    //implementation("com.google.android.gms")
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
