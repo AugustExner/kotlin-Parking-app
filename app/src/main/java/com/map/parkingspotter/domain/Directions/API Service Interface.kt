@@ -12,4 +12,5 @@ interface GoogleMapsApiService {
         @Query("mode") mode: String,
         @Query("key") apiKey: String
     ): DirectionsResponse
+
 }
