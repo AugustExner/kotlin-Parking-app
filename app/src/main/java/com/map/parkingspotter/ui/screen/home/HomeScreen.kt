@@ -56,15 +56,13 @@ fun HomeScreen(viewModel: ParkingSpotsViewModel, userSettingsViewModel: UserView
     val sheetState = rememberModalBottomSheetState()
     var showBottomSheet by remember { mutableStateOf(false) }
     var destination by remember { mutableStateOf("") }
-    var destinationLatLong by remember { mutableStateOf(Location(lat = 0.0, lng = 0.0)) }
+
 
     LaunchedEffect(userId) {
         userSettingsViewModel.loadUserSettings(userId)
     }
     LaunchedEffect(Unit) {
-        coroutineScope.launch {
             viewModel.fetchParkingSpotsWithSettings(setting, destination)
-        }
     }
 
     if (showBottomSheet) {
@@ -75,7 +73,7 @@ fun HomeScreen(viewModel: ParkingSpotsViewModel, userSettingsViewModel: UserView
             sheetState = sheetState
         ) {
             // Sheet content
-            ParkingSpotsVejle(viewModel = ParkingSpotsViewModel(),setting, destination)
+            ParkingSpotsVejle(viewModel = viewModel,setting, destination)
         }
     }
 
@@ -95,7 +93,6 @@ fun HomeScreen(viewModel: ParkingSpotsViewModel, userSettingsViewModel: UserView
                     )
                     DestinationSearchBar(onDestinationChange = { destination = it },
                         onSearch = {
-                            destinationLatLong = viewModel.destinationState
                             showBottomSheet = true
                     })
 

@@ -7,7 +7,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.type.LatLng
 import com.map.parkingspotter.domain.Directions.Location
 import com.map.parkingspotter.domain.Directions.RetrofitInstance
 
@@ -20,7 +19,7 @@ class ParkingSpotsViewModel : ViewModel() {
         private set
 
     var destinationState by mutableStateOf(Location(0.0,0.0))
-        private set
+
 
     fun fetchParkingSpotsWithSettings(settings: String, destination: String) {
         viewModelScope.launch {
@@ -35,11 +34,6 @@ class ParkingSpotsViewModel : ViewModel() {
             }
         }
     }
-
-
-//    fun updateLocation(lat: Double, lng: Double) {
-//        destinationState = Location(lat, lng)
-//    }
 
     fun fetchParkingSpots() {
         viewModelScope.launch {
@@ -81,11 +75,11 @@ class ParkingSpotsViewModel : ViewModel() {
                     spot.distance = leg.distance.value
                     spot.walkingTime = leg.duration.value
 
-//                    if (!hasUpdatedTarget) {
-//                        destinationState = Location(leg.end_location.latitude, leg.end_location.longitude)
-//                        Log.v("direction", "Updated target: ${destinationState.lat}, ${destinationState.lng}")
-//                        hasUpdatedTarget = true
-//                    }
+                    if (!hasUpdatedTarget) {
+                        destinationState = Location(leg.end_location.lat, leg.end_location.lng)
+                        Log.v("direction", "Updated target: ${destinationState.lat}, ${destinationState.lng}")
+                        hasUpdatedTarget = true
+                    }
 
                 } else {
                     Log.v("direction", "No directions found.")
