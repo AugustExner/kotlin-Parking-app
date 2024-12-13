@@ -37,9 +37,10 @@ class Service {
             // Default Settings for the data base
             val defaultSettings = mapOf(
                 "filter" to "Americano",
-                "theme" to "Dark Mode"
-            )
-
+                "theme" to "Dark Mode",
+                "displayName" to "",
+                "homeAddress" to ""
+                )
             db.collection("users")
                 .document(result.uid)
                 .set(defaultSettings)
