@@ -1,6 +1,7 @@
 package com.map.parkingspotter.ui.theme
 
 import android.app.Activity
+import android.hardware.lights.Light
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -15,17 +16,19 @@ import androidx.compose.ui.platform.LocalContext
 private val DarkColorScheme = darkColorScheme(
     primary = ParkingBlue,
     secondary = Color.White,
-    tertiary = ParkingBlue,
+    tertiary = DarkBlue,
     onPrimary = Color.White,
-    onSecondary = ParkingBlue
+    onSecondary = ParkingBlue,
+    onTertiary = Color.Gray,
 )
 
 private val LightColorScheme = lightColorScheme(
     primary = ParkingBlue,
     secondary = ParkingBlue,
-    tertiary = ParkingBlue,
+    tertiary = DarkBlue,
     onPrimary = Color.White,
-    onSecondary = Color.White
+    onSecondary = Color.White,
+    onTertiary = Color.Gray,
 
     /* Other default colors to override
     background = Color(0xFFFFFBFE),

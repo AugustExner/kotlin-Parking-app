@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -156,8 +157,10 @@ fun HomeScreen(viewModel: ParkingSpotsViewModel, userSettingsViewModel: UserView
                     modifier = Modifier
                         .align(Alignment.BottomCenter)
                 ) {
-                    Icon(
+                    Icon(modifier = Modifier
+                        .size(width = 50.dp, height = 50.dp),
                         imageVector = Icons.Default.KeyboardArrowUp,
+                        tint = Color.DarkGray,
                         contentDescription = "Open Parking Spots"
                     )
                 }

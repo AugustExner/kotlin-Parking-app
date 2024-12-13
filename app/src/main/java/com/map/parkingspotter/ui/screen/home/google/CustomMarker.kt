@@ -19,7 +19,7 @@ import com.google.maps.android.compose.MarkerComposable
 import com.google.maps.android.compose.MarkerState
 
 @Composable
-fun CustomMapBoxMarker(
+fun CustomMarkerParkingSpot(
     latitude: Double,
     longitude: Double,
     name: String,
@@ -36,9 +36,9 @@ fun CustomMapBoxMarker(
     ) {
         OutlinedCard(
             modifier = Modifier
-                .width(260.dp)
+                .size(width = 200.dp, height = 110.dp)
                 .padding(8.dp),
-            colors = CardDefaults.outlinedCardColors(containerColor = MaterialTheme.colorScheme.surface),
+            colors = CardDefaults.outlinedCardColors(containerColor = MaterialTheme.colorScheme.primary),
             border = BorderStroke(1.dp, Color.Gray)
         ) {
             Column(
@@ -53,7 +53,7 @@ fun CustomMapBoxMarker(
                         text = name,
                         textAlign = TextAlign.Start,
                         modifier = Modifier.fillMaxWidth(),
-                        color = MaterialTheme.colorScheme.onSurface,
+                        color = MaterialTheme.colorScheme.onPrimary,
                     )
                 }
                 Row (

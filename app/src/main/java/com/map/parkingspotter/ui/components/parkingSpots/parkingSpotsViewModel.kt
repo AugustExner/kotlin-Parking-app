@@ -19,6 +19,8 @@ class ParkingSpotsViewModel : ViewModel() {
         private set
 
     var destinationState by mutableStateOf(Location(0.0,0.0))
+    var destinationAdress by mutableStateOf("")
+    var searchString by mutableStateOf("")
 
 
     fun fetchParkingSpotsWithSettings(settings: String, destination: String) {
@@ -77,6 +79,8 @@ class ParkingSpotsViewModel : ViewModel() {
 
                     if (!hasUpdatedTarget) {
                         destinationState = Location(leg.end_location.lat, leg.end_location.lng)
+                        destinationAdress = leg.end_address
+                        searchString = destination
                         Log.v("direction", "Updated target: ${destinationState.lat}, ${destinationState.lng}")
                         hasUpdatedTarget = true
                     }
