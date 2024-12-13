@@ -16,6 +16,12 @@ class UserViewModel(private val service: Service) : ViewModel() {
     private val _theme = mutableStateOf("")
     val theme: MutableState<String> get() = _theme
 
+    private val _displayName = mutableStateOf("")
+    val displayName: MutableState<String> get() = _displayName
+
+    private val _homeAddress = mutableStateOf("")
+    val homeAddress: MutableState<String> get() = _homeAddress
+
     // Keeps track of the current user ID for Firestore updates
     private var userId: String? = null
 
@@ -27,6 +33,8 @@ class UserViewModel(private val service: Service) : ViewModel() {
             settings?.let {
                 _filter.value = it.filter
                 _theme.value = it.theme
+                _displayName.value = it.displayName
+                _homeAddress.value = it.homeAddress
             }
         }
     }
@@ -43,12 +51,24 @@ class UserViewModel(private val service: Service) : ViewModel() {
         saveSettingsToFirestore()
     }
 
+    fun updateName(newName: String) {
+        _displayName.value = newName
+        saveSettingsToFirestore()
+    }
+
+    fun updateAddress(newAddress: String) {
+        _homeAddress.value = newAddress
+        saveSettingsToFirestore()
+    }
+
     // Save updated settings to Firestore
     private fun saveSettingsToFirestore() {
         val currentUserId = userId ?: return
         val settings = UserData(
             filter = _filter.value,
-            theme = _theme.value
+            theme = _theme.value,
+            displayName = _displayName.value,
+            homeAddress = _homeAddress.value
         )
         viewModelScope.launch {
             try {

@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
@@ -21,6 +22,7 @@ import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -51,6 +53,7 @@ import com.map.parkingspotter.ui.screen.LoggedIn
 import com.map.parkingspotter.ui.screen.auth.SignUp
 import com.map.parkingspotter.ui.screen.auth.SignIn
 import com.map.parkingspotter.ui.screen.home.HomeScreen
+import com.map.parkingspotter.ui.screen.profile.ProfileScreen
 import com.map.parkingspotter.ui.screen.settings.SettingsScreen
 import kotlinx.coroutines.launch
 
@@ -64,9 +67,9 @@ fun Navigation() {//1234qweQWE!  test1@net.dk
     val controller = rememberNavController()
     var isLoggedIn by remember { mutableStateOf(false) }
 
-    var userId by remember { mutableStateOf("")}
+    var userId by remember { mutableStateOf("") }
 
-    val userSettingsViewModel = remember {UserViewModel(userService)}
+    val userSettingsViewModel = remember { UserViewModel(userService) }
 
     val homeTab = TabBarItem(
         title = "Home",
@@ -134,33 +137,36 @@ fun Navigation() {//1234qweQWE!  test1@net.dk
                     HomeScreen(userSettingsViewModel = userSettingsViewModel, userId)
                 }
                 composable(profileTab.title) {
-                    Text(profileTab.title)
+                    ProfileScreen(userSettingsViewModel = userSettingsViewModel, userId)
                 }
                 composable(settingsTab.title) {
-                    SettingsScreen(userSettingsViewModel = userSettingsViewModel, userId, userService)
+                    SettingsScreen(userSettingsViewModel = userSettingsViewModel, userId)
                 }
             }
 
 
 
             if (!isLoggedIn) {
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(10.dp),
-                    modifier = Modifier.padding(top = 20.dp)
-                ) {
-                    Text(
-                        text = "SignUp",
-                        modifier = Modifier.clickable { controller.navigate("signUp") }
-                    )
-                    Text(
-                        text = "SignIn",
-                        modifier = Modifier.clickable { controller.navigate("signIn") }
-                    )
+                Box(modifier = Modifier
+                    .fillMaxWidth(),
+                    contentAlignment = Alignment.Center
+                    ) {
+                    Row(
+                        modifier = Modifier
+                            .padding(top = 20.dp),
+                        Arrangement.spacedBy(20.dp),
+                    ) {
+                        Text(
+                            text = "SignUp",
+                            modifier = Modifier.clickable { controller.navigate("signUp") }
+                        )
+                        Text(
+                            text = "SignIn",
+                            modifier = Modifier.clickable { controller.navigate("signIn") }
+                        )
+                    }
                 }
             }
-
-
-
         }
     }
 }

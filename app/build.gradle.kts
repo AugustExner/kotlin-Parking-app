@@ -63,6 +63,7 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.firebase.auth.ktx)
     implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.storage)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -75,9 +76,17 @@ dependencies {
     implementation("com.google.firebase:firebase-firestore")
     implementation(libs.google.firebase.auth)
 
+
     // Retrofit and Coroutines
     implementation (libs.retrofit2.retrofit)
     implementation (libs.converter.gson)
     implementation (libs.androidx.lifecycle.viewmodel.compose)
     implementation (libs.androidx.lifecycle.livedata)
+
+    implementation("androidx.compose.ui:ui:1.6.0")
+    implementation("androidx.compose.material:material:1.6.0")
+    implementation("androidx.compose.ui:ui-tooling-preview:1.6.0")
+    implementation("androidx.compose.foundation:foundation:1.6.0")
+
+    implementation("androidx.compose.material3:material3")
 }
