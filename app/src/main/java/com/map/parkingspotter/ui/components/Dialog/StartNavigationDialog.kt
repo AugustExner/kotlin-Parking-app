@@ -1,5 +1,11 @@
 package com.map.parkingspotter.ui.components.Dialog
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import android.widget.Toast
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -9,15 +15,17 @@ import androidx.compose.ui.graphics.vector.ImageVector
 
 @Composable
 fun AlertDialogExample(
-    onDismissRequest: () -> Unit,
-    onConfirmation: () -> Unit,
     dialogTitle: String,
     dialogText: String,
-    icon: ImageVector,
+    lat: Double,
+    lng: Double,
+    name: String,
+    context: Context,
+    onDismiss: () -> Unit
 ) {
     AlertDialog(
         icon = {
-            Icon(icon, contentDescription = "Example Icon")
+            Icon(Icons.Default.Info, contentDescription = "Example Icon")
         },
         title = {
             Text(text = dialogTitle)
@@ -26,12 +34,12 @@ fun AlertDialogExample(
             Text(text = dialogText)
         },
         onDismissRequest = {
-            onDismissRequest()
+
         },
         confirmButton = {
             TextButton(
                 onClick = {
-                    onConfirmation()
+                    ToGoogleMaps(lat, lng, context)
                 }
             ) {
                 Text("Confirm")
@@ -40,11 +48,25 @@ fun AlertDialogExample(
         dismissButton = {
             TextButton(
                 onClick = {
-                    onDismissRequest()
+                    onDismiss()
                 }
             ) {
                 Text("Dismiss")
             }
         }
     )
+}
+
+fun ToGoogleMaps(lat: Double, lng: Double, context: Context) {
+    val gmmIntentUri = Uri.parse("google.navigation:q=$lat,$lng&mode=d")
+    val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri).apply {
+        setPackage("com.google.android.apps.maps")
+    }
+    // Check if there's an app to handle the intent
+    if (mapIntent.resolveActivity(context.packageManager) != null) {
+        context.startActivity(mapIntent)
+    } else {
+        Toast.makeText(context, "Google Maps is not installed", Toast.LENGTH_SHORT).show()
+    }
+    println("Start Google Maps")
 }

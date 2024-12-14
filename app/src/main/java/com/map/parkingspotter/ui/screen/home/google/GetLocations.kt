@@ -4,13 +4,21 @@ import android.content.pm.PackageManager
 import android.location.Location
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import com.map.parkingspotter.ui.components.parkingSpots.ParkingSpotsViewModel
 import com.map.parkingspotter.ui.screen.home.GoogleMaps
@@ -51,8 +59,23 @@ fun GetLocations(mapsService: MapsService, viewModel: ParkingSpotsViewModel) {
         val longitude = location.longitude
 
         GoogleMaps(viewModel, latitude, longitude)
-        Text("Current Location: Latitude: ${latitude}, Longitude: ${longitude}")
+        //Text("Current Location: Latitude: ${latitude}, Longitude: ${longitude}")
     } else {
-        Text("Fetching current location...")
+        //Text("Fetching current location...")
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+            ) {
+
+
+            CircularProgressIndicator(
+                modifier = Modifier.width(64.dp),
+                color = MaterialTheme.colorScheme.secondary,
+                trackColor = MaterialTheme.colorScheme.surfaceVariant,
+            )
+        }
     }
 }

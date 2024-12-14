@@ -19,17 +19,16 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -58,32 +57,18 @@ fun ParkingSpotsVejle(
         }
     }
 
-
-    // Display the alert dialog when needed
     if (openAlertDialog.value) {
         AlertDialogExample(
-            onDismissRequest = { openAlertDialog.value = false },
-
-            onConfirmation = {
-                openAlertDialog.value = false
-                val gmmIntentUri = Uri.parse("google.navigation:q=$selectedLatitude,$selectedLongitude&mode=d")
-                val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri).apply {
-                    setPackage("com.google.android.apps.maps")
-                }
-                // Check if there's an app to handle the intent
-                if (mapIntent.resolveActivity(context.packageManager) != null) {
-                    context.startActivity(mapIntent)
-                } else {
-                    Toast.makeText(context, "Google Maps is not installed", Toast.LENGTH_SHORT).show()
-                }
-                println("Start Google Maps")
-            },
-
-            dialogTitle = dialogTitle,
-            dialogText = dialogText,
-            icon = Icons.Default.Info
+            dialogTitle,
+            dialogText,
+            selectedLatitude,
+            selectedLongitude,
+            selectedName,
+            context,
+            onDismiss = { openAlertDialog.value = false }
         )
     }
+
 
     // Display parking spots in a lazy column
     LazyColumn {
@@ -93,14 +78,16 @@ fun ParkingSpotsVejle(
             Card(
                 onClick = {
                     dialogTitle = "${parkingSpot.parkeringsplads} "
-                    dialogText = "Would you like to start navigation to: ${parkingSpot.parkeringsplads}"
-                    openAlertDialog.value = true
+                    dialogText =
+                        "Would you like to start navigation to: ${parkingSpot.parkeringsplads}"
                     selectedLatitude = parkingSpot.latitude.toDouble()
                     selectedLongitude = parkingSpot.longitude.toDouble()
                     selectedName = parkingSpot.parkeringsplads
+                    openAlertDialog.value = true
+
                 },
                 shape = RoundedCornerShape(16.dp),
-                colors = CardDefaults.cardColors(containerColor = Color(0xFFECEFF1)),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.tertiary),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(8.dp)
@@ -114,72 +101,73 @@ fun ParkingSpotsVejle(
                 Column(
                     modifier = Modifier
                         .padding(16.dp)
-                        .fillMaxWidth())
+                        .fillMaxWidth()
+                )
                 {
                     Row(
-                        horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        modifier = Modifier.fillMaxWidth()
                     ) {
                         Row {
                             Icon(
                                 imageVector = Icons.Filled.LocationOn,
                                 contentDescription = "Location Icon",
-                                tint = Color(0xFF0D47A1),
+                                tint = MaterialTheme.colorScheme.primary,
                                 modifier = Modifier.size(24.dp)
                             )
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(
                                 text = destination.replaceFirstChar { it.uppercase() },
                                 fontSize = 16.sp,
-                                fontWeight = FontWeight.SemiBold
+                                fontWeight = FontWeight.SemiBold,
+                                color = MaterialTheme.colorScheme.onPrimary
                             )
                         }
                         Text(
                             text = "${parkingSpot.distance} m" + " | " + "${parkingSpot.walkingTime} min",
                             fontSize = 14.sp,
-                            color = Color.Gray
+                            color = MaterialTheme.colorScheme.onTertiary
                         )
                     }
                     Spacer(modifier = Modifier.height(12.dp))
 
 
-                        Row(
-                            horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()
-                        ) {
-                            Row {
-                                Icon(
-                                    imageVector = Icons.Filled.LocationOn,
-                                    contentDescription = "Location Icon",
-                                    tint = Color(0xFF0D47A1),
-                                    modifier = Modifier.size(24.dp)
-                                )
-                                Spacer(modifier = Modifier.width(12.dp))
-                                Text(
-                                    text = parkingSpot.parkeringsplads,
-                                    fontSize = 16.sp,
-                                    fontWeight = FontWeight.SemiBold
-                                )
-                            }
+                    Row(
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Row {
+                            Icon(
+                                imageVector = Icons.Filled.LocationOn,
+                                contentDescription = "Location Icon",
+                                tint = MaterialTheme.colorScheme.primary,
+                                modifier = Modifier.size(24.dp)
+                            )
+                            Spacer(modifier = Modifier.width(12.dp))
+                            Text(
+                                text = parkingSpot.parkeringsplads,
+                                fontSize = 16.sp,
+                                fontWeight = FontWeight.SemiBold,
+                                color = MaterialTheme.colorScheme.onPrimary
+                            )
                         }
-                            Row(
-                                horizontalArrangement = Arrangement.SpaceBetween,
-                                modifier = Modifier.fillMaxWidth()
-                            ) {
-                                Text(
-                                    text = "Ledige ${parkingSpot.ledigePladser} " + " | " + " Antal ${parkingSpot.antalPladser}",
-                                    fontSize = 14.sp,
-                                    color = Color.Gray
-                                )
-                                Spacer(modifier = Modifier.width(12.dp))
-                                Text(
-                                    text = parkingSpot.price.toString() + ".kr pr time",
-                                    fontSize = 14.sp,
-                                    color = Color.Gray
-                                )
-                            }
-
-
-
-
+                    }
+                    Row(
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text(
+                            text = "Ledige ${parkingSpot.ledigePladser} " + " | " + " Antal ${parkingSpot.antalPladser}",
+                            fontSize = 14.sp,
+                            color = MaterialTheme.colorScheme.onTertiary
+                        )
+                        Spacer(modifier = Modifier.width(12.dp))
+                        Text(
+                            text = parkingSpot.price.toString() + ".kr pr time",
+                            fontSize = 14.sp,
+                            color = MaterialTheme.colorScheme.onTertiary
+                        )
+                    }
 
 
 //                    Log.v("Location", parkingSpot.parkeringsplads)

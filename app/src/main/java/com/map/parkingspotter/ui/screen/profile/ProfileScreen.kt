@@ -22,11 +22,12 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TextField
 import androidx.compose.ui.graphics.Color
+import com.map.parkingspotter.domain.geocoding.GeocodingViewModel
 import com.map.parkingspotter.integration.firebase.viewmodels.UserViewModel
 
 
 @Composable
-fun ProfileScreen(userSettingsViewModel: UserViewModel, userId: String) {
+fun ProfileScreen(userSettingsViewModel: UserViewModel, userId: String, geocodingViewModel: GeocodingViewModel) {
     val user = FirebaseAuth.getInstance().currentUser
 
     var displayName by remember { mutableStateOf(user?.displayName ?: "") }
@@ -89,6 +90,7 @@ fun ProfileScreen(userSettingsViewModel: UserViewModel, userId: String) {
                 }
                 userSettingsViewModel.updateName(updatedName)
                 userSettingsViewModel.updateAddress(updatedAddress)
+                geocodingViewModel.getCoordinates(updatedAddress)
             },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.secondary, // Button background color

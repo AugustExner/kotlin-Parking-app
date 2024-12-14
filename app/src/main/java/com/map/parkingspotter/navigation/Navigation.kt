@@ -42,6 +42,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.map.parkingspotter.domain.Horse
+import com.map.parkingspotter.domain.geocoding.GeocodingViewModel
 import com.map.parkingspotter.integration.firebase.auth.Service
 import com.map.parkingspotter.integration.firebase.viewmodels.UserViewModel
 import com.map.parkingspotter.ui.components.horse.HorseDetailsItem
@@ -70,6 +71,7 @@ fun Navigation() {//1234qweQWE!  test1@net.dk
     var userId by remember { mutableStateOf("") }
 
     val userSettingsViewModel = remember { UserViewModel(userService) }
+    val geocodingViewModel = remember { GeocodingViewModel() }
 
     val homeTab = TabBarItem(
         title = "Home",
@@ -135,10 +137,10 @@ fun Navigation() {//1234qweQWE!  test1@net.dk
                 }
 
                 composable(homeTab.title) {
-                    HomeScreen(viewModel = ParkingSpotsViewModel(), userSettingsViewModel = userSettingsViewModel, userId)
+                    HomeScreen(viewModel = ParkingSpotsViewModel(), userSettingsViewModel = userSettingsViewModel, userId, geocodingViewModel = geocodingViewModel)
                 }
                 composable(profileTab.title) {
-                    ProfileScreen(userSettingsViewModel = userSettingsViewModel, userId)
+                    ProfileScreen(userSettingsViewModel = userSettingsViewModel, userId, geocodingViewModel = geocodingViewModel)
                 }
                 composable(settingsTab.title) {
                     SettingsScreen(userSettingsViewModel = userSettingsViewModel, userId)
