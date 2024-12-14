@@ -1,7 +1,9 @@
 package com.map.parkingspotter.navigation
 
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Context
 import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -19,6 +21,7 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -41,7 +44,11 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.rememberPermissionState
 import com.map.parkingspotter.domain.Horse
+import com.map.parkingspotter.domain.Notifications.NotificationHandler
 import com.map.parkingspotter.domain.geocoding.GeocodingViewModel
 import com.map.parkingspotter.integration.firebase.auth.Service
 import com.map.parkingspotter.integration.firebase.viewmodels.UserViewModel
@@ -58,10 +65,10 @@ import com.map.parkingspotter.ui.screen.profile.ProfileScreen
 import com.map.parkingspotter.ui.screen.settings.SettingsScreen
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalPermissionsApi::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun Navigation() {//1234qweQWE!  test1@net.dk
+fun Navigation(context: Context) {//1234qweQWE!  test1@net.dk
     val scope = rememberCoroutineScope()
     val service = remember { Service() }
     val userService = remember { com.map.parkingspotter.integration.firebase.firestore.Service() }
@@ -100,8 +107,6 @@ fun Navigation() {//1234qweQWE!  test1@net.dk
         }
     }
 
-    val sheetState = rememberModalBottomSheetState()
-    var showBottomSheet by remember { mutableStateOf(false) }
 
 
 
@@ -150,6 +155,15 @@ fun Navigation() {//1234qweQWE!  test1@net.dk
 
 
             if (!isLoggedIn) {
+
+                val postNotificationPermission = rememberPermissionState(permission = Manifest.permission.POST_NOTIFICATIONS)
+
+                LaunchedEffect(key1 = true) {
+                    if (!postNotificationPermission.status.isGranted) {
+                        postNotificationPermission.launchPermissionRequest()
+                    }
+                }
+
                 Box(modifier = Modifier
                     .fillMaxWidth(),
                     contentAlignment = Alignment.Center

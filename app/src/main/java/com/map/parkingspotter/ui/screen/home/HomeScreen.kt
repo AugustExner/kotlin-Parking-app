@@ -97,7 +97,8 @@ fun HomeScreen(viewModel: ParkingSpotsViewModel, userSettingsViewModel: UserView
             geocodingViewModel.lng.value,
             "",
             context,
-            onDismiss = { openAlertDialog.value = false }
+            onDismiss = { openAlertDialog.value = false },
+            onConfirm = {}
         )
     }
 
