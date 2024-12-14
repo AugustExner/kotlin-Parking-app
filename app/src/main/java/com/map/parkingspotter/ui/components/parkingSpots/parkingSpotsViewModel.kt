@@ -108,5 +108,8 @@ class ParkingSpotsViewModel : ViewModel() {
         if (filter == "Available Spots" && !descending) {
             parkingSpots = parkingSpots.sortedByDescending { it.ledigePladser }
         }
+        if (filter == "Distance" && !descending) {
+            parkingSpots = parkingSpots.sortedBy { it.distance }
+        }
     }
 }

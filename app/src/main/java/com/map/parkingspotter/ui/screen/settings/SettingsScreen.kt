@@ -27,7 +27,7 @@ import com.map.parkingspotter.ui.theme.ParkingSpotterTheme
 
 @Composable
 fun SettingsScreen(userSettingsViewModel: UserViewModel, userId: String) {
-    val filterSettings = listOf("Available Spots", "Price", "Espresso", "Latte", "Mocha")
+    val filterSettings = listOf("Available Spots", "Price", "Distance")
     val themeSettings = listOf("Dark Mode", "Light Mode")
 
     val selectedFilter = userSettingsViewModel.filter.value
