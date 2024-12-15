@@ -12,6 +12,7 @@ import com.map.parkingspotter.domain.Directions.RetrofitInstance
 
 import com.map.parkingspotter.integration.vejleAPI.VejleParkingOverview
 import com.map.parkingspotter.integration.vejleAPI.VejleRetrofitClient
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class ParkingSpotsViewModel : ViewModel() {
@@ -21,12 +22,27 @@ class ParkingSpotsViewModel : ViewModel() {
     var destinationState by mutableStateOf(Location(0.0,0.0))
     var destinationAdress by mutableStateOf("")
     var searchString by mutableStateOf("")
+    var userSetting by mutableStateOf("")
+
+    init {
+        fetchParkingDataPeriodically()
+    }
+
+    private fun fetchParkingDataPeriodically() {
+        viewModelScope.launch {
+            while (true) {
+                fetchParkingSpots()
+                delay(60000)  // Wait for 1 minute
+            }
+        }
+    }
 
 
     fun fetchParkingSpotsWithSettings(settings: String, destination: String) {
         viewModelScope.launch {
             try {
                 val response = VejleRetrofitClient.instance.getVejleParkingSpots()
+                userSetting = settings
                 fetchDirections(response, destination)
                 parkingSpots = UpdatePrices(response)
                 calculatePercentage(parkingSpots)
@@ -111,5 +127,17 @@ class ParkingSpotsViewModel : ViewModel() {
         if (filter == "Distance" && !descending) {
             parkingSpots = parkingSpots.sortedBy { it.distance }
         }
+    }
+
+    fun findBestAvailableSpot(): VejleParkingOverview? {
+        //Filter
+        filterParkingSpots(userSetting)
+
+        //Check above 10%
+        val availableSpots = parkingSpots.filter {
+            spot -> spot.percentage > 10
+        }
+        // Find the spot with the lowest price from the filtered list
+        return availableSpots.firstOrNull()
     }
 }

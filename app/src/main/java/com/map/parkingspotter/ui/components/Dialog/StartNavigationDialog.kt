@@ -21,7 +21,8 @@ fun AlertDialogExample(
     lng: Double,
     name: String,
     context: Context,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
+    onConfirm: () -> Unit
 ) {
     AlertDialog(
         icon = {
@@ -39,7 +40,8 @@ fun AlertDialogExample(
         confirmButton = {
             TextButton(
                 onClick = {
-                    ToGoogleMaps(lat, lng, context)
+                    //ToGoogleMaps(lat, lng, context)
+                    onConfirm()
                 }
             ) {
                 Text("Confirm")

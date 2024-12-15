@@ -22,7 +22,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             ParkingSpotterTheme {
-                Navigation()
+                Navigation(this)
             }
         }
     }
