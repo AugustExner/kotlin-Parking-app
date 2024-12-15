@@ -59,7 +59,7 @@ fun AlertDialogExample(
     )
 }
 
-fun ToGoogleMaps(lat: Double, lng: Double, context: Context) {
+fun toGoogleMaps(lat: Double, lng: Double, context: Context) {
     val gmmIntentUri = Uri.parse("google.navigation:q=$lat,$lng&mode=d")
     val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri).apply {
         setPackage("com.google.android.apps.maps")

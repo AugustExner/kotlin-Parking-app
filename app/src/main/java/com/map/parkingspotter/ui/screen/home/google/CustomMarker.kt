@@ -36,7 +36,7 @@ fun CustomMarkerParkingSpot(
     ) {
         OutlinedCard(
             modifier = Modifier
-                .size(width = 200.dp, height = 110.dp)
+                .size(width = 230.dp, height = 120.dp)
                 .padding(8.dp),
             colors = CardDefaults.outlinedCardColors(containerColor = MaterialTheme.colorScheme.primary),
             border = BorderStroke(1.dp, Color.Gray)

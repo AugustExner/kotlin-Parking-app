@@ -40,24 +40,18 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
-import com.map.parkingspotter.domain.Horse
-import com.map.parkingspotter.domain.Notifications.NotificationHandler
 import com.map.parkingspotter.domain.geocoding.GeocodingViewModel
 import com.map.parkingspotter.integration.firebase.auth.Service
 import com.map.parkingspotter.integration.firebase.viewmodels.UserViewModel
-import com.map.parkingspotter.ui.components.horse.HorseDetailsItem
 import com.map.parkingspotter.ui.components.menu.TabBarItem
 import com.map.parkingspotter.ui.components.menu.TabView
-import com.map.parkingspotter.ui.components.parkingSpots.ParkingSpotsVejle
 import com.map.parkingspotter.ui.components.parkingSpots.ParkingSpotsViewModel
-import com.map.parkingspotter.ui.screen.LoggedIn
 import com.map.parkingspotter.ui.screen.auth.SignUp
 import com.map.parkingspotter.ui.screen.auth.SignIn
 import com.map.parkingspotter.ui.screen.home.HomeScreen
@@ -68,12 +62,13 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalPermissionsApi::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun Navigation(context: Context) {//1234qweQWE!  test1@net.dk
+fun Navigation(context: Context) {
     val scope = rememberCoroutineScope()
     val service = remember { Service() }
     val userService = remember { com.map.parkingspotter.integration.firebase.firestore.Service() }
     val controller = rememberNavController()
     var isLoggedIn by remember { mutableStateOf(false) }
+    var navGraphInitialized by remember { mutableStateOf(false) }
 
     var userId by remember { mutableStateOf("") }
 
@@ -98,17 +93,16 @@ fun Navigation(context: Context) {//1234qweQWE!  test1@net.dk
 
     val tabBarItems = listOf(homeTab, profileTab, settingsTab)
 
-
-    LaunchedEffect(key1 = isLoggedIn) {
-        if (isLoggedIn) {
-            controller.navigate(homeTab.title)
-        } else {
-            controller.navigate("signup")
+    // Check and navigate only after NavHost is set up
+    LaunchedEffect(navGraphInitialized, isLoggedIn) {
+        if (navGraphInitialized) {
+            if (isLoggedIn) {
+                controller.navigate(homeTab.title)
+            } else {
+                controller.navigate("signUp")
+            }
         }
     }
-
-
-
 
     Scaffold(
         bottomBar = {
@@ -118,6 +112,7 @@ fun Navigation(context: Context) {//1234qweQWE!  test1@net.dk
         }
     ) { paddingValues ->
         Column(modifier = Modifier.padding(paddingValues)) {
+            // Initialize NavHost
             NavHost(
                 controller,
                 startDestination = if (isLoggedIn) homeTab.title else "signUp"
@@ -140,23 +135,37 @@ fun Navigation(context: Context) {//1234qweQWE!  test1@net.dk
                         }
                     }
                 }
-
                 composable(homeTab.title) {
-                    HomeScreen(viewModel = ParkingSpotsViewModel(), userSettingsViewModel = userSettingsViewModel, userId, geocodingViewModel = geocodingViewModel)
+                    HomeScreen(
+                        viewModel = ParkingSpotsViewModel(),
+                        userSettingsViewModel = userSettingsViewModel,
+                        userId = userId,
+                        geocodingViewModel = geocodingViewModel
+                    )
                 }
                 composable(profileTab.title) {
-                    ProfileScreen(userSettingsViewModel = userSettingsViewModel, userId, geocodingViewModel = geocodingViewModel)
+                    ProfileScreen(
+                        userSettingsViewModel = userSettingsViewModel,
+                        userId = userId,
+                        geocodingViewModel = geocodingViewModel
+                    )
                 }
                 composable(settingsTab.title) {
-                    SettingsScreen(userSettingsViewModel = userSettingsViewModel, userId)
+                    SettingsScreen(
+                        userSettingsViewModel = userSettingsViewModel,
+                        userId = userId
+                    )
                 }
             }
 
-
+            // Mark NavHost setup as complete
+            LaunchedEffect(Unit) {
+                navGraphInitialized = true
+            }
 
             if (!isLoggedIn) {
-
-                val postNotificationPermission = rememberPermissionState(permission = Manifest.permission.POST_NOTIFICATIONS)
+                val postNotificationPermission =
+                    rememberPermissionState(permission = Manifest.permission.POST_NOTIFICATIONS)
 
                 LaunchedEffect(key1 = true) {
                     if (!postNotificationPermission.status.isGranted) {
@@ -164,10 +173,11 @@ fun Navigation(context: Context) {//1234qweQWE!  test1@net.dk
                     }
                 }
 
-                Box(modifier = Modifier
-                    .fillMaxWidth(),
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth(),
                     contentAlignment = Alignment.Center
-                    ) {
+                ) {
                     Row(
                         modifier = Modifier
                             .padding(top = 20.dp),

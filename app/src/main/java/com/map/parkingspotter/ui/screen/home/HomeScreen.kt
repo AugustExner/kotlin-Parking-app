@@ -1,6 +1,10 @@
 package com.map.parkingspotter.ui.screen.home
 //import android.location.Location
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -46,6 +50,7 @@ import com.map.parkingspotter.domain.geocoding.GeocodingViewModel
 import com.map.parkingspotter.integration.firebase.auth.Service.Companion.TAG
 import com.map.parkingspotter.integration.firebase.viewmodels.UserViewModel
 import com.map.parkingspotter.ui.components.Dialog.AlertDialogExample
+import com.map.parkingspotter.ui.components.Dialog.toGoogleMaps
 import com.map.parkingspotter.ui.components.parkingSpots.ParkingSpotsVejle
 import com.map.parkingspotter.ui.components.parkingSpots.ParkingSpotsViewModel
 import com.map.parkingspotter.ui.screen.home.SearchBar.DestinationSearchBar
@@ -60,7 +65,6 @@ fun HomeScreen(viewModel: ParkingSpotsViewModel, userSettingsViewModel: UserView
 
     val context = LocalContext.current
     val locationClient by lazy { LocationServices.getFusedLocationProviderClient(context) }
-    val coroutineScope = rememberCoroutineScope()
     val setting = userSettingsViewModel.filter.value
     val sheetState = rememberModalBottomSheetState()
     var showBottomSheet by remember { mutableStateOf(false) }
@@ -98,7 +102,7 @@ fun HomeScreen(viewModel: ParkingSpotsViewModel, userSettingsViewModel: UserView
             "",
             context,
             onDismiss = { openAlertDialog.value = false },
-            onConfirm = {}
+            onConfirm = { toGoogleMaps(geocodingViewModel.lat.value, geocodingViewModel.lng.value, context)}
         )
     }
 
